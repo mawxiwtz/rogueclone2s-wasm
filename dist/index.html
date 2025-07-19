@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.min.css" />
+    </head>
+
+    <body>
+        <div id="container">
+            <h1>Rogue Clone 2s (UTF-8) WASM</h1>
+            <div id="terminal"></div>
+            <div class="info">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" alt="GitHub Logo" width="32" height="32">
+                <a href="https://github.com/mawxiwtz/rogueclone2s-wasm">https://github.com/mawxiwtz/rogueclone2s-wasm</a>
+            </div>
+        </div>
+        <script type="module">
+            import {Terminal} from 'https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/+esm';
+            import { FitAddon } from 'https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/+esm';
+            import { openpty } from 'https://cdn.jsdelivr.net/npm/xterm-pty@0.11.1/+esm'
+            import initEmscripten from './lib/rogue.mjs';
+
+            const xterm = new Terminal({
+                cols: 80,
+                rows: 24,
+                fontSize: 16,
+            });
+            xterm.open(document.getElementById('terminal'));
+
+            const fitAddon = new FitAddon();
+            xterm.loadAddon(fitAddon);
+
+            const { master, slave } = openpty();
+            xterm.loadAddon(master);
+
+            xterm.onResize((evt) => {
+                const cols = xterm.cols;
+                const rows = xterm.rows;
+
+                const cellWidth = xterm._core._renderService.dimensions.actualCellWidth;
+                const cellHeight = xterm._core._renderService.dimensions.actualCellHeight;
+
+                const canvasWidth = cellWidth * cols;
+                const canvasHeight = cellHeight * rows;
+
+                console.log('cols', cols, 'rows', rows);
+                console.log('cellWidth', cellWidth, 'cellHeight', cellHeight);
+                console.log('canvas width', canvasWidth, 'canvas height', canvasHeight);
+            })
+
+            //fitAddon.fit();
+            xterm.focus();
+
+            await initEmscripten({ pty: slave });
+        </script>
+        <style>
+            body {
+                color: white;
+                margin: 0px 0px;
+                background-color: black;
+            }
+            a {
+                text-decoration: none;
+            }
+            a:link {
+                color: #e0e0e0;
+            }
+            a:hover {
+                color: #f0f0ff;
+            }
+            a:visited {
+                color: #f0f0e0;
+            }
+            div#container {
+                width: 100vw;
+                margin: 32px auto;
+            }
+            div.info {
+                margin: 32px auto;
+                text-align: center;
+            }
+            div.info > img {
+                filter: invert(100%);
+            }
+            h1 {
+                margin: 16px auto;
+                text-align: center;
+            }
+            div#terminal {
+                width: 48em;
+                margin: 0px auto;
+            }
+        </style>
+    </body>
+</html>

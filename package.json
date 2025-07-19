@@ -1,0 +1,16 @@
+{
+  "name": "rogueclone2s-wasm",
+  "version": "0.1.0",
+  "description": "Rogue Clone 2s UTF-8 and WASM version",
+  "author": "mawxiwtz",
+  "keywords": [
+    "rogue",
+    "rpg",
+    "wasm"
+  ],
+  "main": "dist/lib/rogue.mjs",
+  "module": "dist/lib/rogue.mjs",
+  "scripts": {
+    "start": "node server.mjs"
+  }
+}
