@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
+        <link rel="icon" href="./lib/rogue.png" type="image/png" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.min.css" />
     </head>
 
@@ -87,8 +88,11 @@
                 text-align: center;
             }
             div#terminal {
-                width: 48em;
+                width: fit-content;
                 margin: 0px auto;
+            }
+            .xterm-viewport {
+                scrollbar-width: none; /* Firefox */
             }
         </style>
     </body>
